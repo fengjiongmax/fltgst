@@ -1,6 +1,5 @@
+#include "native_binding.h"
 #include <gst/gst.h>
-
-// gst-launch-1.0 audiotestsrc ! audioconvert ! autoaudiosink
 
 typedef struct _FltGstData
 {
@@ -14,14 +13,14 @@ typedef struct _FltGstData
 
 FltGstData *data;
 
-void init(void)
+FFI_PLUGIN_EXPORT void init(void)
 {
     // init
     gst_init(NULL, NULL);
     data = (FltGstData *)malloc(sizeof(FltGstData));
 }
 
-void setup_pipeline(void)
+FFI_PLUGIN_EXPORT void setup_pipeline(void)
 {
     // setup pipeline
     data->audiotestsrc = gst_element_factory_make("audiotestsrc", NULL);
@@ -47,7 +46,7 @@ void setup_pipeline(void)
     }
 }
 
-void start_pipeline(void)
+FFI_PLUGIN_EXPORT void start_pipeline(void)
 {
     // start pipeline
     GstStateChangeReturn ret;
@@ -60,25 +59,52 @@ void start_pipeline(void)
     }
 }
 
-void run_mainloop(void)
+gpointer run_main_loop_thread(gpointer user_data)
 {
-    // run main loop
     g_main_loop_run(data->mainloop);
+    return NULL;
 }
 
-void free_resource(void)
+FFI_PLUGIN_EXPORT void run_mainloop(void)
+{
+    // run main loop
+    if (data->mainloop == NULL || !g_main_loop_is_running(data->mainloop))
+    {
+        if (data->mainloop)
+        {
+            g_main_loop_unref(data->mainloop);
+        }
+        g_thread_new("main_loop", run_main_loop_thread, NULL);
+    }
+}
+
+FFI_PLUGIN_EXPORT void free_resource(void)
 {
     // free resources
+    g_main_loop_unref(data->mainloop);
     gst_element_set_state(data->pipeline, GST_STATE_NULL);
     gst_object_unref(data->pipeline);
 }
 
-int main(int argc, char const *argv[])
+// A very short-lived native function.
+//
+// For very short-lived functions, it is fine to call them on the main isolate.
+// They will block the Dart execution while running the native function, so
+// only do this for native functions which are guaranteed to be short-lived.
+FFI_PLUGIN_EXPORT intptr_t sum(intptr_t a, intptr_t b) { return a + b; }
+
+// A longer-lived native function, which occupies the thread calling it.
+//
+// Do not call these kind of native functions in the main isolate. They will
+// block Dart execution. This will cause dropped frames in Flutter applications.
+// Instead, call these native functions on a separate isolate.
+FFI_PLUGIN_EXPORT intptr_t sum_long_running(intptr_t a, intptr_t b)
 {
-    init();
-    setup_pipeline();
-    start_pipeline();
-    run_mainloop();
-    free_resource();
-    return 0;
+    // Simulate work.
+#if _WIN32
+    Sleep(5000);
+#else
+    usleep(5000 * 1000);
+#endif
+    return a + b;
 }
