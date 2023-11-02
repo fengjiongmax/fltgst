@@ -22,13 +22,20 @@
             "flutterMode": "release"
         },
         {
-            "name": "C++ Launch",
+            "name": "Linux Native",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/linux/x64/debug/bundle/fltgst",
             "args": [],
             "environment": [],
             "cwd": "${workspaceFolder}"
-          }
+        },
+        {
+            "name":"Windows native",
+            "type":"cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/windows/runner/Debug/fltgst.exe",
+            "cwd": "${fileDirname}",
+        }
     ]
 }
