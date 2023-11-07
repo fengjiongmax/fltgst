@@ -36,6 +36,14 @@
             "request": "launch",
             "program": "${workspaceRoot}/build/windows/runner/Debug/fltgst.exe",
             "cwd": "${fileDirname}",
+        },
+        {
+            "name": "MacOS Native",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/macos/Build/Products/Debug/fltgst.app",
+            "MIMode": "lldb",
+            "cwd": "${fileDirname}"
         }
     ]
 }
