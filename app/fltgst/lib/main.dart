@@ -40,10 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
     native_binding.init();
     native_binding.setupPipeline();
     native_binding.startPipeline();
-
-    if (!Platform.isLinux) {
-      native_binding.runMainLoop();
-    }
   }
 
   @override

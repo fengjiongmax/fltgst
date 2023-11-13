@@ -1,0 +1,11 @@
+#include <gst/gst.h>
+
+/* Declaration of static plugins */
+ @PLUGINS_DECLARATION@;
+
+/* This is called by gst_init() */
+void
+gst_init_static_plugins (void)
+{
+  @PLUGINS_REGISTRATION@;
+}

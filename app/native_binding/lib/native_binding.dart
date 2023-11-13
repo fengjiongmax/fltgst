@@ -9,7 +9,6 @@ import 'native_binding_bindings_generated.dart';
 void init() => _bindings.init();
 void setupPipeline() => _bindings.setup_pipeline();
 void startPipeline() => _bindings.start_pipeline();
-void runMainLoop() => _bindings.run_mainloop();
 void freeResource() => _bindings.free_resource();
 
 /// A very short-lived native function.

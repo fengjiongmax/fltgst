@@ -1,0 +1,31 @@
+#include <gst/gst.h>
+
+/* Declaration of static plugins */
+ 
+GST_PLUGIN_STATIC_DECLARE(coreelements);
+GST_PLUGIN_STATIC_DECLARE(coretracers);
+GST_PLUGIN_STATIC_DECLARE(adder);
+GST_PLUGIN_STATIC_DECLARE(app);
+GST_PLUGIN_STATIC_DECLARE(audioconvert);
+GST_PLUGIN_STATIC_DECLARE(audiorate);
+GST_PLUGIN_STATIC_DECLARE(audiotestsrc);
+GST_PLUGIN_STATIC_DECLARE(gio);
+GST_PLUGIN_STATIC_DECLARE(autodetect);
+GST_PLUGIN_STATIC_DECLARE(opensles);
+
+/* This is called by gst_init() */
+void
+gst_init_static_plugins (void)
+{
+  
+GST_PLUGIN_STATIC_REGISTER(coreelements);
+GST_PLUGIN_STATIC_REGISTER(coretracers);
+GST_PLUGIN_STATIC_REGISTER(adder);
+GST_PLUGIN_STATIC_REGISTER(app);
+GST_PLUGIN_STATIC_REGISTER(audioconvert);
+GST_PLUGIN_STATIC_REGISTER(audiorate);
+GST_PLUGIN_STATIC_REGISTER(audiotestsrc);
+GST_PLUGIN_STATIC_REGISTER(gio);
+GST_PLUGIN_STATIC_REGISTER(autodetect);
+GST_PLUGIN_STATIC_REGISTER(opensles);
+}

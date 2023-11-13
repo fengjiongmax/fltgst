@@ -20,7 +20,6 @@
 FFI_PLUGIN_EXPORT void init(void);
 FFI_PLUGIN_EXPORT void setup_pipeline(void);
 FFI_PLUGIN_EXPORT void start_pipeline(void);
-FFI_PLUGIN_EXPORT void run_mainloop(void);
 FFI_PLUGIN_EXPORT void free_resource(void);
 
 // A very short-lived native function.

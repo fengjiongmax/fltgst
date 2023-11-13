@@ -59,24 +59,6 @@ FFI_PLUGIN_EXPORT void start_pipeline(void)
     }
 }
 
-gpointer run_main_loop_thread(gpointer user_data)
-{
-    g_main_loop_run(data->mainloop);
-    return NULL;
-}
-
-FFI_PLUGIN_EXPORT void run_mainloop(void)
-{
-    // run main loop
-    if (data->mainloop == NULL || !g_main_loop_is_running(data->mainloop))
-    {
-        if (data->mainloop)
-        {
-            g_main_loop_unref(data->mainloop);
-        }
-        g_thread_new("main_loop", run_main_loop_thread, NULL);
-    }
-}
 
 FFI_PLUGIN_EXPORT void free_resource(void)
 {

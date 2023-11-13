@@ -50,14 +50,6 @@ class NativeBindingBindings {
       _lookup<ffi.NativeFunction<ffi.Void Function()>>('start_pipeline');
   late final _start_pipeline = _start_pipelinePtr.asFunction<void Function()>();
 
-  void run_mainloop() {
-    return _run_mainloop();
-  }
-
-  late final _run_mainloopPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('run_mainloop');
-  late final _run_mainloop = _run_mainloopPtr.asFunction<void Function()>();
-
   void free_resource() {
     return _free_resource();
   }
