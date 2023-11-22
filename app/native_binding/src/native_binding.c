@@ -1,6 +1,10 @@
 #include "native_binding.h"
 #include <gst/gst.h>
 
+#ifdef IOS
+    #include "gst_ios_init.h"
+#endif
+
 typedef struct _FltGstData
 {
     GstElement *pipeline;
@@ -15,6 +19,9 @@ FltGstData *data;
 
 FFI_PLUGIN_EXPORT void init(void)
 {
+#ifdef IOS
+    gst_ios_init();
+#endif
     // init
     gst_init(NULL, NULL);
     data = (FltGstData *)malloc(sizeof(FltGstData));

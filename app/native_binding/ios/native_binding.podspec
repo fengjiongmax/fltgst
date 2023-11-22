@@ -23,6 +23,14 @@ A new Flutter FFI plugin project.
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 
+  'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386 arm64',
+  'HEADER_SEARCH_PATHS' => '"${HOME}/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers"',
+  'LD_RUNPATH_SEARCH_PATHS' => ['"${HOME}/Library/Developer/GStreamer/iPhone.sdk/"','"${HOME}/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Libraries"'],
+  'OTHER_LDFLAGS' => '" -L${HOME}/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Libraries -F${HOME}/Library/Developer/GStreamer/iPhone.sdk/ -framework GStreamer "',
+  'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) IOS=1'
+  }
   s.swift_version = '5.0'
+  s.libraries= 'iconv','resolv'
+  s.framework= 'AudioToolbox'
 end
