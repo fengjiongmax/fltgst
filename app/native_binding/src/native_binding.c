@@ -1,9 +1,15 @@
 #include "native_binding.h"
 #include <gst/gst.h>
+#include <jni.h>
+#include <android/log.h>
+#include <android/native_window.h>
+#include <android/native_window_jni.h>
 
 #ifdef IOS
-    #include "gst_ios_init.h"
+#include "gst_ios_init.h"
 #endif
+
+static JavaVM *java_vm;
 
 typedef struct _FltGstData
 {
@@ -12,7 +18,8 @@ typedef struct _FltGstData
     GstElement *audioconvert;
     GstElement *autoaudiosink;
 
-    GMainLoop *mainloop;
+    ANativeWindow *native_window;
+
 } FltGstData;
 
 FltGstData *data;
@@ -35,8 +42,6 @@ FFI_PLUGIN_EXPORT void setup_pipeline(void)
     data->autoaudiosink = gst_element_factory_make("autoaudiosink", NULL);
     data->pipeline = gst_pipeline_new(NULL);
 
-    data->mainloop = g_main_loop_new(NULL, FALSE);
-
     if (!data->audiotestsrc || !data->audioconvert || !data->autoaudiosink || !data->pipeline)
     {
         g_printerr("Elements could not be created.\n");
@@ -53,6 +58,11 @@ FFI_PLUGIN_EXPORT void setup_pipeline(void)
     }
 }
 
+FFI_PLUGIN_EXPORT void set_video_surface(gpointer surface)
+{
+    // ANativeWindow *new_native_window = ANativeWindow_fromSurface()
+}
+
 FFI_PLUGIN_EXPORT void start_pipeline(void)
 {
     // start pipeline
@@ -65,12 +75,37 @@ FFI_PLUGIN_EXPORT void start_pipeline(void)
         return;
     }
 }
+static JNINativeMethod native_methods[] = {
+};
+/* Library initializer */
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    JNIEnv *env = NULL;
+    java_vm = vm;
+
+    if ((*vm)->GetEnv (vm, (void **) &env, JNI_VERSION_1_4) != JNI_OK) {
+        __android_log_print (ANDROID_LOG_ERROR, "native_view",
+                             "Could not retrieve JNIEnv");
+        return 0;
+    }
+
+//    jclass klass = (*env)->FindClass (env,
+//                                      "com/example/native_binding/NativeView");
+
+    jclass  klass = (*env)->FindClass(env,"com/example/native_view_example/NativeView");
+    (*env)->RegisterNatives (env, klass, native_methods,
+                             G_N_ELEMENTS (native_methods));
+
+//    (*env)->RegisterNatives (env, klass, native_methods,
+//                             G_N_ELEMENTS (native_methods));
+
+//    com.example.native_view_example
+    return JNI_VERSION_1_4;
+}
 
 
 FFI_PLUGIN_EXPORT void free_resource(void)
 {
     // free resources
-    g_main_loop_unref(data->mainloop);
     gst_element_set_state(data->pipeline, GST_STATE_NULL);
     gst_object_unref(data->pipeline);
 }

@@ -1,6 +1,7 @@
 package com.example.native_view
 
 import androidx.annotation.NonNull
+import com.example.native_view_example.NativeViewFactory
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -19,6 +20,9 @@ class NativeViewPlugin: FlutterPlugin, MethodCallHandler {
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "native_view")
     channel.setMethodCallHandler(this)
+    flutterPluginBinding
+      .platformViewRegistry
+      .registerViewFactory("fltgst/native_view",NativeViewFactory())
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {

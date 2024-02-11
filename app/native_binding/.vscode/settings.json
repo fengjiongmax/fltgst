@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "gst_ios_init.h": "c"
-    }
+        "gst_ios_init.h": "c",
+        "gst.h": "c",
+        "native_window.h": "c"
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "${env:HOME}/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include"
+    ],
 }

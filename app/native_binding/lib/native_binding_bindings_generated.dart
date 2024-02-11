@@ -26,6 +26,7 @@ class NativeBindingBindings {
           lookup)
       : _lookup = lookup;
 
+  /// #endif
   void init() {
     return _init();
   }
@@ -57,6 +58,22 @@ class NativeBindingBindings {
   late final _free_resourcePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function()>>('free_resource');
   late final _free_resource = _free_resourcePtr.asFunction<void Function()>();
+
+  void set_video_surface(
+    ffi.Pointer<ffi.Int> env,
+    int surface,
+  ) {
+    return _set_video_surface(
+      env,
+      surface,
+    );
+  }
+
+  late final _set_video_surfacePtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int>, ffi.Int)>>(
+      'set_video_surface');
+  late final _set_video_surface = _set_video_surfacePtr
+      .asFunction<void Function(ffi.Pointer<ffi.Int>, int)>();
 
   /// A very short-lived native function.
   ///

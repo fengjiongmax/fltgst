@@ -65,7 +65,7 @@ IF(ANDROID OR __ANDROID__)
 
   LIST(APPEND APPENDED_SOURCE gst_plugin_init_android.c)
 
-  LIST(APPEND LINK_LIBS intl ffi iconv gmodule-2.0 pcre2-8 gstbase-1.0 gstaudio-1.0 orc-0.4 gstapp-1.0 gio-2.0 log z OpenSLES)
+  LIST(APPEND LINK_LIBS intl ffi iconv gmodule-2.0 pcre2-8 gstbase-1.0 gstaudio-1.0 orc-0.4 gstapp-1.0 gio-2.0 android log z OpenSLES)
 
 ELSE()
   include_directories(${GST_INCLUDE_DIRS})
