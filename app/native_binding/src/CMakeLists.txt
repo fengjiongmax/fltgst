@@ -54,7 +54,7 @@ IF(ANDROID OR __ANDROID__)
   SET(PLUGINS_DECLARATION)
   SET(PLUGINS_REGISTRATION)
 
-  LIST(APPEND GST_PLUGINS coreelements coretracers adder app audioconvert audiorate audiotestsrc gio autodetect opensles)
+  LIST(APPEND GST_PLUGINS coreelements coretracers adder app audioconvert audiorate audiotestsrc videotestsrc gio autodetect opensles ipcpipeline opengl)
   foreach(GST_P ${GST_PLUGINS})
     LIST(APPEND LINK_LIBS "gst${GST_P}")
     LIST(APPEND PLUGINS_DECLARATION "\nGST_PLUGIN_STATIC_DECLARE(${GST_P})")
@@ -65,7 +65,7 @@ IF(ANDROID OR __ANDROID__)
 
   LIST(APPEND APPENDED_SOURCE gst_plugin_init_android.c)
 
-  LIST(APPEND LINK_LIBS intl ffi iconv gmodule-2.0 pcre2-8 gstbase-1.0 gstaudio-1.0 orc-0.4 gstapp-1.0 gio-2.0 android log z OpenSLES)
+  LIST(APPEND LINK_LIBS intl ffi iconv gmodule-2.0 pcre2-8 gstbase-1.0 gstaudio-1.0 gstvideo-1.0 gstgl-1.0 gstcontroller-1.0 png16 graphene-1.0 jpeg orc-0.4 gstapp-1.0 gio-2.0 android log z OpenSLES EGL GLESv2)
 
 ELSE()
   include_directories(${GST_INCLUDE_DIRS})

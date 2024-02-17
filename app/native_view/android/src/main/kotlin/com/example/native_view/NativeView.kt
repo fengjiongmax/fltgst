@@ -10,6 +10,11 @@ internal class NativeView(context:Context,id:Int,creationParams:Map<String?,Any?
     private val surfaceView:SurfaceView
     private val surfaceHolder:SurfaceHolder
 
+    external fun nativeSurfaceInit(surface:Any);
+    external fun nativeSurfaceFianlize();
+    external fun nativeTest();
+    external fun startPipeline();
+
     override fun getView(): View {
         return surfaceView
     }
@@ -19,25 +24,29 @@ internal class NativeView(context:Context,id:Int,creationParams:Map<String?,Any?
     init {
         surfaceView = SurfaceView(context)
         surfaceHolder = surfaceView.holder
+        surfaceHolder.addCallback(this);
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
 //        surfaceHolder.surface
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
+        val a = surfaceView.measuredHeight;
+        val b = surfaceView.measuredWidth;
+        nativeSurfaceInit(holder.surface);
+        startPipeline();
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
+        nativeSurfaceFianlize();
     }
 
     companion object{
         init {
-//            System.mapLibraryName()
-//            System.loadLibrary("native_view")
             System.loadLibrary("native_binding")
         }
     }

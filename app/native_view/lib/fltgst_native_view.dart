@@ -4,14 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class FltGstNativeView extends StatefulWidget {
+class FltGstNativeView extends StatelessWidget {
   const FltGstNativeView({super.key});
 
-  @override
-  State<FltGstNativeView> createState() => _FltGstNativeViewState();
-}
-
-class _FltGstNativeViewState extends State<FltGstNativeView> {
   @override
   Widget build(BuildContext context) {
     const String viewType = "fltgst/native_view";
