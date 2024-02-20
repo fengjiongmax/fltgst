@@ -12,8 +12,6 @@ internal class NativeView(context:Context,id:Int,creationParams:Map<String?,Any?
 
     external fun nativeSurfaceInit(surface:Any);
     external fun nativeSurfaceFianlize();
-    external fun nativeTest();
-    external fun startPipeline();
 
     override fun getView(): View {
         return surfaceView
@@ -37,7 +35,6 @@ internal class NativeView(context:Context,id:Int,creationParams:Map<String?,Any?
         val a = surfaceView.measuredHeight;
         val b = surfaceView.measuredWidth;
         nativeSurfaceInit(holder.surface);
-        startPipeline();
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {

@@ -1,4 +1,3 @@
-
 import 'native_view_platform_interface.dart';
 
 class NativeView {

@@ -38,12 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     native_binding.init();
     native_binding.setupPipeline();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    // native_binding.startPipeline();
-    // });
-    // native_binding.init();
-    // native_binding.setupPipeline();
-    // native_binding.startPipeline();
+    native_binding.startPipeline();
   }
 
   @override

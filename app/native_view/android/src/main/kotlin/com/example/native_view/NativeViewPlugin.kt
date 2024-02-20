@@ -23,9 +23,6 @@ class NativeViewPlugin: FlutterPlugin, MethodCallHandler {
     flutterPluginBinding
       .platformViewRegistry
       .registerViewFactory("fltgst/native_view",NativeViewFactory())
-    flutterPluginBinding
-      .platformViewRegistry
-      .registerViewFactory("fltgst/text_view",TextViewFactory())
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {

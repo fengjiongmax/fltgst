@@ -13,7 +13,6 @@
 #include "gst_ios_init.h"
 #endif
 
-// for video  gst-launch-1.0 -v videotestsrc pattern=snow ! video/x-raw,width=1280,height=720 ! autovideosink
 typedef struct _FltGstData
 {
     GstElement *pipeline;
@@ -26,8 +25,6 @@ typedef struct _FltGstData
     GMainLoop *mainloop;
 
     GstElement *overlay;
-
-    GMainContext *context;
 
 #if ANDROID
     ANativeWindow *native_window;
@@ -44,50 +41,6 @@ FFI_PLUGIN_EXPORT void init(void)
     // init
     gst_init(NULL, NULL);
     data = g_new0(FltGstData,1);
-//    data = (FltGstData *)malloc(sizeof(FltGstData));
-//#ifdef ANDROID
-//    data->native_window = NULL;
-//#endif
-//    data->pipeline = NULL;
-//    data->mainloop = NULL;
-}
-
-gpointer run_main_loop_thread(gpointer user_data)
-{
-    g_main_loop_run(data->mainloop);
-    return NULL;
-}
-
-FFI_PLUGIN_EXPORT void run_mainloop(void)
-{
-    // run main loop
-    if (data->mainloop == NULL || !g_main_loop_is_running(data->mainloop))
-    {
-        if (data->mainloop)
-        {
-            g_main_loop_unref(data->mainloop);
-        }
-        g_thread_new("main_loop", run_main_loop_thread, NULL);
-    }
-}
-
-static void
-error_cb (GstBus * bus, GstMessage * msg, FltGstData * data)
-{
-    GError *err;
-    gchar *debug_info;
-    gchar *message_string;
-
-    gst_message_parse_error (msg, &err, &debug_info);
-    message_string =
-            g_strdup_printf ("Error received from element %s: %s",
-                             GST_OBJECT_NAME (msg->src), err->message);
-    g_clear_error (&err);
-    g_free (debug_info);
-//    set_ui_message (message_string, data);
-    g_free (message_string);
-//    data->target_state = GST_STATE_NULL;
-    gst_element_set_state (data->pipeline, GST_STATE_NULL);
 }
 
 FFI_PLUGIN_EXPORT void setup_pipeline(void)
@@ -119,14 +72,6 @@ FFI_PLUGIN_EXPORT void setup_pipeline(void)
 
     data->overlay = gst_bin_get_by_interface(GST_BIN(data->pipeline),GST_TYPE_VIDEO_OVERLAY);
 
-//    data->context = g_main_context_new ();
-//    g_main_context_push_thread_default (data->context);
-
-    // setup bus
-    GstBus *bus = gst_element_get_bus(data->pipeline);
-    g_signal_connect (G_OBJECT (bus), "message::error", (GCallback) error_cb,
-                      data);
-    g_object_unref(bus);
 }
 
 
@@ -141,7 +86,6 @@ FFI_PLUGIN_EXPORT void start_pipeline(void)
         gst_object_unref(data->pipeline);
         return;
     }
-//    run_mainloop();
 }
 
 #if ANDROID
@@ -153,7 +97,7 @@ Java_com_example_native_1view_1example_NativeView_nativeSurfaceFianlize(JNIEnv *
     GST_DEBUG("Releasing Native Window %p", data->native_window);
     if (data->pipeline)
     {
-        gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(data->autovideosink),
+        gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(data->overlay),
                                             (guintptr)NULL);
         gst_element_set_state(data->pipeline, GST_STATE_READY);
     }
@@ -204,67 +148,6 @@ Java_com_example_native_1view_1example_NativeView_nativeSurfaceInit(JNIEnv *env,
 
 }
 
-JNIEXPORT void JNICALL
-Java_com_example_native_1view_1example_NativeView_startPipeline(JNIEnv *env, jobject thiz) {
-    // TODO: implement startPipeline()
-    start_pipeline();
-}
-
-JNIEXPORT void JNICALL
-Java_com_example_native_1view_1example_NativeView_nativeTest(JNIEnv *env, jobject thiz)
-{
-    // TODO: implement nativeTest()
-    GST_DEBUG("Called from jni");
-}
-
-// static void
-// gst_native_surface_init (JNIEnv * env, jobject thiz, jobject surface)
-//{
-////    CustomData *data = GET_CUSTOM_DATA (env, thiz, custom_data_field_id);
-////    if (!data)
-////        return;
-//    ANativeWindow *new_native_window = ANativeWindow_fromSurface (env, surface);
-//    GST_DEBUG ("Received surface %p (native window %p)", surface,
-//               new_native_window);
-//
-//    if (data->native_window) {
-//        ANativeWindow_release (data->native_window);
-//        if (data->native_window == new_native_window) {
-//            GST_DEBUG ("New native window is the same as the previous one %p",
-//                       data->native_window);
-//            if (data->pipeline) {
-//                gst_video_overlay_expose (GST_VIDEO_OVERLAY (data->pipeline));
-//                gst_video_overlay_expose (GST_VIDEO_OVERLAY (data->pipeline));
-//            }
-//            return;
-//        } else {
-//            GST_DEBUG ("Released previous native window %p", data->native_window);
-////            data->initialized = FALSE;
-//        }
-//    }
-//    data->native_window = new_native_window;
-//
-////    check_initialization_complete (data);
-//}
-
-///* Library initializer */
-// jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-//     JNIEnv *env = NULL;
-//
-//     if ((*vm)->GetEnv (vm, (void **) &env, JNI_VERSION_1_4) != JNI_OK) {
-//         __android_log_print (ANDROID_LOG_ERROR, "native_view",
-//                              "Could not retrieve JNIEnv");
-//         return 0;
-//     }
-//
-//     jclass klass = (*env)->FindClass (env,
-//                                       "com/example/native_view_example/NativeView");
-//
-////    (*env)->RegisterNatives (env, klass, native_methods,
-////                             G_N_ELEMENTS (native_methods));
-//
-//    return JNI_VERSION_1_4;
-//}
 #endif
 
 FFI_PLUGIN_EXPORT void free_resource(void)
