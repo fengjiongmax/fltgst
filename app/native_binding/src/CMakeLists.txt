@@ -5,10 +5,13 @@ cmake_minimum_required(VERSION 3.10)
 
 project(native_binding_library VERSION 0.0.1 LANGUAGES C)
 
+IF( ANDROID OR __ANDROID__)
+ELSE()
+  find_package(PkgConfig REQUIRED)
 
-find_package(PkgConfig REQUIRED)
+  pkg_search_module(GST REQUIRED gstreamer-1.0)
+ENDIF()
 
-pkg_search_module(GST REQUIRED gstreamer-1.0)
 
 IF(WIN32)
   find_program(CMAKE_PKGCONFIG_EXECUTABLE pkg-config)
