@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
@@ -14,40 +12,48 @@ class FltGstNativeView extends StatelessWidget {
     const String viewType = "fltgst/native_view";
     const Map<String, dynamic> creationParams = <String, dynamic>{};
 
-    if (Platform.isAndroid) {
-      return PlatformViewLink(
-          surfaceFactory: (context, controller) {
-            return AndroidViewSurface(
-              controller: controller as AndroidViewController,
-              hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-              gestureRecognizers: const <Factory<
-                  OneSequenceGestureRecognizer>>{},
-            );
-          },
-          onCreatePlatformView: (params) {
-            return PlatformViewsService.initSurfaceAndroidView(
-              id: params.id,
-              viewType: viewType,
-              layoutDirection: TextDirection.ltr,
-              creationParams: creationParams,
-              creationParamsCodec: const StandardMessageCodec(),
-              onFocus: () {
-                params.onFocusChanged(true);
-              },
-            )
-              ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-              ..create();
-          },
-          viewType: viewType);
-    } else if (Platform.isIOS) {
-      return const UiKitView(
-        viewType: viewType,
-        layoutDirection: TextDirection.ltr,
-        creationParams: creationParams,
-        creationParamsCodec: StandardMessageCodec(),
-      );
-    } else {
-      return Container();
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return PlatformViewLink(
+            surfaceFactory: (context, controller) {
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+                gestureRecognizers: const <Factory<
+                    OneSequenceGestureRecognizer>>{},
+              );
+            },
+            onCreatePlatformView: (params) {
+              return PlatformViewsService.initSurfaceAndroidView(
+                id: params.id,
+                viewType: viewType,
+                layoutDirection: TextDirection.ltr,
+                creationParams: creationParams,
+                creationParamsCodec: const StandardMessageCodec(),
+                onFocus: () {
+                  params.onFocusChanged(true);
+                },
+              )
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..create();
+            },
+            viewType: viewType);
+      case TargetPlatform.iOS:
+        return const UiKitView(
+          viewType: viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: StandardMessageCodec(),
+        );
+      case TargetPlatform.macOS:
+        return const AppKitView(
+          viewType: viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: StandardMessageCodec(),
+        );
+      default:
+        return Container();
     }
   }
 }

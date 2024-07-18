@@ -88,7 +88,6 @@ FFI_PLUGIN_EXPORT void start_pipeline(void)
     }
 }
 
-#if IOS
 
 void set_native_window(gpointer native_window_ptr)
 {
@@ -103,7 +102,6 @@ void set_native_window(gpointer native_window_ptr)
     }
 }
 
-#endif
 
 #if ANDROID
 
