@@ -88,6 +88,23 @@ FFI_PLUGIN_EXPORT void start_pipeline(void)
     }
 }
 
+#if IOS
+
+void set_native_window(gpointer native_window_ptr)
+{
+    GstVideoOverlay  *overlay = GST_VIDEO_OVERLAY(data->overlay);
+    if (native_window_ptr && data->pipeline)
+    {
+        gst_video_overlay_set_window_handle(overlay,(guintptr)native_window_ptr);
+        
+        GstState cur_state;
+        gst_element_get_state(GST_ELEMENT(data->pipeline),&cur_state,NULL,0);
+        g_print("cur_state: %d",cur_state);
+    }
+}
+
+#endif
+
 #if ANDROID
 
 JNIEXPORT void JNICALL

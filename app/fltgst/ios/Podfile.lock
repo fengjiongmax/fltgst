@@ -2,21 +2,27 @@ PODS:
   - Flutter (1.0.0)
   - native_binding (0.0.1):
     - Flutter
+  - native_view (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - native_binding (from `.symlinks/plugins/native_binding/ios`)
+  - native_view (from `.symlinks/plugins/native_view/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   native_binding:
     :path: ".symlinks/plugins/native_binding/ios"
+  native_view:
+    :path: ".symlinks/plugins/native_view/ios"
 
 SPEC CHECKSUMS:
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   native_binding: 7fe80dd7e7a0cde61379d6ef8e9a5532aa4e910f
+  native_view: d88f82a3cfa32119cad14ff5589657396dc02520
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.15.2
