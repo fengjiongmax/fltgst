@@ -17,7 +17,7 @@ Before building the project, ensure you have the following installed on your dev
 * **GStreamer Binaries & Development Files**:
 * **Windows**: Install via [GStreamer Website](https://gstreamer.freedesktop.org/download/) (Select MSVC 64-bit runtime and development packages).
 * **macOS/iOS**: Install via Homebrew or the official `.pkg` files.
-* **Linux**: `sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev`.
+* **Linux**: `sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly`.
 * **Android**: Download the GStreamer Android binaries.
 
 
